@@ -51,6 +51,7 @@ void mount_release(struct mount *mount) {
 }
 
 int do_mount(const struct fs_ops *fs, const char *source, const char *point, const char *info, int flags) {
+    printf("heyy %s\n", point);
     struct mount *new_mount = malloc(sizeof(struct mount));
     if (new_mount == NULL)
         return _ENOMEM;
@@ -155,7 +156,7 @@ dword_t sys_mount(addr_t source_addr, addr_t point_addr, addr_t type_addr, dword
         return _EINVAL;
 
     struct statbuf stat;
-    int err = generic_statat(AT_PWD, point_raw, &stat, true);
+    int err = generic_statat(AT_PWD, point_raw, &stat, 0);
     if (err < 0)
         return err;
     if (!S_ISDIR(stat.mode))
